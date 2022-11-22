@@ -2,8 +2,8 @@
 PluginInfo = {
   Name = "Cameras~PTZ Optics Visca over IP",
   Description = "PTZOptics VISCA over IP",
-  Version = "1.0",
-  BuildVersion = "1.0.0.0",
+  Version = "1.1.0.0",
+  BuildVersion = "1.1.0.0",
   Id = "7e83ed10-69ac-11ed-a1eb-0242ac120002",
   Author = "Richard Hills, Isaac Porter",
 } 
@@ -152,7 +152,7 @@ function GetControls(props)
   
   -- Connection ---------------------------------------------------------------
   table.insert(ctrls, {
-    Name = "Online",
+    Name = "system.online",
     ControlType = "Indicator",
     IndicatorType = "Led",
     DefaultValue = false,
@@ -162,7 +162,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "IPAddress",
+    Name = "system.ip.address",
     ControlType = "Text",
     DefaultValue = "127.0.0.1",
     UserPin = true,
@@ -170,7 +170,7 @@ function GetControls(props)
     Count = 1
   })
   table.insert(ctrls, {
-    Name = "IPPort",
+    Name = "system.ip.port",
     ControlType = "Knob",
     ControlUnit = "Integer",
     Min = 1,
@@ -183,7 +183,7 @@ function GetControls(props)
   
   -- PTZ ----------------------------------------------------------------------
   table.insert(ctrls, {
-    Name = "PTZ_SpeedPan",
+    Name = "setup.pan.speed",
     ControlType = "Knob",
     ControlUnit = "Integer",
     Min = 1,
@@ -194,7 +194,7 @@ function GetControls(props)
     Count = 1
   })
   table.insert(ctrls, {
-    Name = "PTZ_SpeedTilt",
+    Name = "setup.tilt.speed",
     ControlType = "Knob",
     ControlUnit = "Integer",
     Min = 1,
@@ -205,7 +205,7 @@ function GetControls(props)
     Count = 1
   })
   table.insert(ctrls, {
-    Name = "PTZ_SpeedZoom",
+    Name = "setup.zoom.speed",
     ControlType = "Knob",
     ControlUnit = "Integer",
     Min = 0,
@@ -217,7 +217,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_Home",
+    Name = "preset.home.load",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -227,7 +227,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_Up",
+    Name = "tilt.up",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -237,7 +237,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_Dn",
+    Name = "tilt.down",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -247,7 +247,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_Lt",
+    Name = "pan.left",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -257,7 +257,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_Rt",
+    Name = "pan.right",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -267,7 +267,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_UpRt",
+    Name = "pan.right.tilt.up",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -279,7 +279,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_DnRt",
+    Name = "pan.right.tilt.down",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -291,7 +291,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_DnLt",
+    Name = "pan.left.tilt.down",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -303,7 +303,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_UpLt",
+    Name = "pan.left.tilt.up",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -315,7 +315,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_In",
+    Name = "zoom.in",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -325,7 +325,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "PTZ_Out",
+    Name = "zoom.out",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -336,7 +336,7 @@ function GetControls(props)
   
   -- Presets ------------------------------------------------------------------
   table.insert(ctrls, {
-    Name = "PresetSaved",
+    Name = "preset.saved",
     ControlType = "Indicator",
     IndicatorType = "Led",
     DefaultValue = false,
@@ -347,7 +347,7 @@ function GetControls(props)
   
   for pst = 0, NumPresets - 1 do
     table.insert(ctrls, {
-      Name = "Preset_Recall " .. string.format("%03d",pst),
+      Name = "preset.recall." .. string.format("%03d",pst),
       ControlType = "Button",
       ButtonType = "Momentary",
       Count = 1,
@@ -356,7 +356,7 @@ function GetControls(props)
       Icon = ""
     })
     table.insert(ctrls, {
-      Name = "Preset_Save " .. string.format("%03d",pst),
+      Name = "preset.save." .. string.format("%03d",pst),
       ControlType = "Button",
       ButtonType = "Momentary",
       Count = 1,
@@ -454,8 +454,8 @@ function GetControlLayout(props)
     end
   
     -- Connection -------------------------------------------------------------
-    layout["Online"] = {
-      PrettyName = "Online",
+    layout["system.online"] = {
+      PrettyName = "System~Online",
       Style = "Indicator",
       Color = {0, 255, 0},
       OffColor = {64, 0, 0},
@@ -474,8 +474,8 @@ function GetControlLayout(props)
       Position = {15, 74},
       Size = {62, h1}
     })
-    layout["IPAddress"] = {
-      PrettyName = "IP Address",
+    layout["system.ip.address"] = {
+      PrettyName = "System~IP Address",
       Style = "Text",
       FontSize = fs1,
       HTextAlign = "Center",
@@ -493,8 +493,8 @@ function GetControlLayout(props)
       Position = {184, 74},
       Size = {33, h1}
     })
-    layout["IPPort"] = {
-      PrettyName = "IP Port",
+    layout["system.ip.port"] = {
+      PrettyName = "System~IP Port",
       Style = "Text",
       Color = Palette.White,
       OffColor = Palette.White,
@@ -524,8 +524,8 @@ function GetControlLayout(props)
       Position = {17, 153},
       Size = {17, 54}
     })
-    layout["PTZ_SpeedPan"] = {
-      PrettyName = "PTZ Speed Pan",
+    layout["setup.pan.speed"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Speed",
       Style = "Text",
       FontSize = fs1,
       HTextAlign = "Center",
@@ -534,8 +534,8 @@ function GetControlLayout(props)
       Position = {37, 155},
       Size = {44, 18}
     }
-    layout["PTZ_SpeedTilt"] = {
-      PrettyName = "PTZ Speed Tilt",
+    layout["setup.tilt.speed"] = {
+      PrettyName = "Pan-Tilt-Zoom~Tilt Speed",
       Style = "Text",
       FontSize = fs1,
       HTextAlign = "Center",
@@ -544,8 +544,8 @@ function GetControlLayout(props)
       Position = {37, 173},
       Size = {44, 18}
     }
-    layout["PTZ_SpeedZoom"] = {
-      PrettyName = "PTZ Speed Zoom",
+    layout["setup.zoom.speed"] = {
+      PrettyName = "Pan-Tilt-Zoom~Zoom Speed",
       Style = "Text",
       FontSize = fs1,
       HTextAlign = "Center",
@@ -555,8 +555,8 @@ function GetControlLayout(props)
       Size = {44, 18}
     }
   
-    layout["PTZ_Home"] = {
-      PrettyName = "PTZ00-Home",
+    layout["preset.home.load"] = {
+      PrettyName = "Pan-Tilt-Zoom~Home",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -564,8 +564,8 @@ function GetControlLayout(props)
       Position = {139, 150},
       Size = {h2, h2},
     }    
-    layout["PTZ_Up"] = {
-      PrettyName = "PTZ01-Up",
+    layout["tilt.up"] = {
+      PrettyName = "Pan-Tilt-Zoom~Tilt Up",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -573,8 +573,8 @@ function GetControlLayout(props)
       Position = {139, 118},
       Size = {h2, h2},
     }    
-    layout["PTZ_Dn"] = {
-      PrettyName = "PTZ02-Down",
+    layout["tilt.down"] = {
+      PrettyName = "Pan-Tilt-Zoom~Tilt Down",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -582,8 +582,8 @@ function GetControlLayout(props)
       Position = {139, 182},
       Size = {h2, h2},
     }    
-    layout["PTZ_Lt"] = {
-      PrettyName = "PTZ03-Left",
+    layout["pan.left"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Left",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -591,8 +591,8 @@ function GetControlLayout(props)
       Position = {107, 150},
       Size = {h2, h2},
     }    
-    layout["PTZ_Rt"] = {
-      PrettyName = "PTZ04-Right",
+    layout["pan.right"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Right",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -600,8 +600,8 @@ function GetControlLayout(props)
       Position = {171, 150},
       Size = {h2, h2},
     }    
-    layout["PTZ_UpRt"] = {
-      PrettyName = "PTZ05-Up Right",
+    layout["pan.right.tilt.up"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Right / Tilt Up",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -609,8 +609,8 @@ function GetControlLayout(props)
       Position = {171, 118},
       Size = {h2, h2},
     }    
-    layout["PTZ_DnRt"] = {
-      PrettyName = "PTZ06-Down Right",
+    layout["pan.right.tilt.down"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Right / Tilt Down",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -618,8 +618,8 @@ function GetControlLayout(props)
       Position = {171, 182},
       Size = {h2, h2},
     }    
-    layout["PTZ_DnLt"] = {
-      PrettyName = "PTZ07-Down Left",
+    layout["pan.left.tilt.down"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Left / Tilt Down",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -627,17 +627,17 @@ function GetControlLayout(props)
       Position = {107, 182},
       Size = {h2, h2},
     }    
-    layout["PTZ_UpLt"] = {
-      PrettyName = "PTZ08-Up Left",
+    layout["pan.left.tilt.up"] = {
+      PrettyName = "Pan-Tilt-Zoom~Pan Left / Tilt Up",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
       Margin = 4,
       Position = {107, 118},
       Size = {h2, h2},
-    }    
-    layout["PTZ_In"] = {
-      PrettyName = "PTZ09-Zoom In",
+    }
+    layout["zoom.in"] = {
+      PrettyName = "Pan-Tilt-Zoom~Zoom In",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -645,8 +645,8 @@ function GetControlLayout(props)
       Position = {235, 133},
       Size = {h2, h2},
     }    
-    layout["PTZ_Out"] = {
-      PrettyName = "PTZ10-Zoom Out",
+    layout["zoom.out"] = {
+      PrettyName = "Pan-Tilt-Zoom~Zoom Out",
       Legend = "",
       Style = "Button",
       Color = Palette.es_blue,
@@ -658,7 +658,7 @@ function GetControlLayout(props)
     -- Presets ----------------------------------------------------------------
     
     layout["PresetSaved"] = {
-    PrettyName = "Preset Saved",
+    PrettyName = "Preset~Preset Saved",
     Style = "Indicator",
     Color = {255, 0, 0},
     OffColor = {16, 0, 0},
@@ -673,8 +673,8 @@ function GetControlLayout(props)
       local row = 1 + math.floor(pst / 8)
       local col = 1 + (pst % 8)
   
-      layout["Preset_Recall " .. string.format("%03d",pst)] = {
-        PrettyName = "Recall P" .. string.format("%03d", pst),
+      layout["preset.recall." .. string.format("%03d",pst)] = {
+        PrettyName = "Preset~Recall P" .. string.format("%03d", pst),
         Style = "Button",
         Margin = 4,
         Color = Palette.Green,
@@ -685,8 +685,8 @@ function GetControlLayout(props)
       }
   
       if props["Preset Hold Save"].Value == false then
-        layout["Preset_Save " .. string.format("%03d",pst)] = {
-          PrettyName = "Save P" .. string.format("%03d", pst),
+        layout["preset.save." .. string.format("%03d",pst)] = {
+          PrettyName = "Preset~Save P" .. string.format("%03d", pst),
           Style = "Button",
           Margin = 4,
           Color = Palette.Red,
@@ -710,8 +710,8 @@ if Controls then
     UDP = UdpSocket.New()  -- Create new UdpSocket object
     UDPSocketOpen = false
   
-    IPAddressCtl = Controls.IPAddress
-    IPPortCtl = Controls.IPPort
+    IPAddressCtl = Controls["system.ip.address"]
+    IPPortCtl = Controls["system.ip.port"]
   
     -- Map the UDP example properties to plugin properies
     IPAddress = IPAddressCtl.String
@@ -804,7 +804,7 @@ if Controls then
       if DebugFunction then print("Close() Called") end
       UDP:Close()
       UDPSocketOpen=false
-      Controls["Online"].Boolean = false
+      Controls["system.online"].Boolean = false
   
       -- Stop any timers and clear data here
       CommsPollTimer:Stop()
@@ -818,7 +818,7 @@ if Controls then
       
       -- Handle response data here
       if string.sub(packet.Data, 1, 2) == "\x01\x11" then --Valid visca reply
-        Controls["Online"].Boolean = true
+        Controls["system.online"].Boolean = true
         CommsTimeoutTimer:Start(PollInteval * 2.5)
       end
     end
@@ -827,7 +827,7 @@ if Controls then
     function UDP_Initialize()
       if DebugFunction then print("Initialize() Called") end
   
-      Controls["Online"].Boolean = false
+      Controls["system.online"].Boolean = false
       
       IPAddress = IPAddressCtl.String
       Port = IPPortCtl.Value
@@ -857,9 +857,9 @@ if Controls then
     local NumPresets = Properties["Num Presets"].Value
     local PresetHoldTime = Properties["Preset Hold Time"].Value
     
-    local PanSpeed = Controls.PTZ_SpeedPan.Value
-    local TiltSpeed = Controls.PTZ_SpeedTilt.Value
-    local ZoomSpeed = Controls.PTZ_SpeedZoom.Value
+    local PanSpeed = Controls["setup.pan.speed"].Value
+    local TiltSpeed = Controls["setup.tilt.speed"].Value
+    local ZoomSpeed = Controls["setup.zoom.speed"].Value
   
     function HexToString(num, len)
       --Returns num as string of len * hex bytes
@@ -883,28 +883,28 @@ if Controls then
     end
   
     function PTZ_Control(func)
-      print("PTZ_Control(" .. func .. ")")
+      print(func)
   
       local PS = PanSpeed
       local TS = TiltSpeed
   
-      if     func == "PTZ_Home" then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x04,0xff))
+      if     func == "preset.home.load" then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x04,0xff))
   
-      elseif func == "PTZ_Up"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x03,0x01,0xff))
-      elseif func == "PTZ_Dn"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x03,0x02,0xff))
-      elseif func == "PTZ_Lt"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x01,0x03,0xff))
-      elseif func == "PTZ_Rt"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x02,0x03,0xff))
+      elseif func == "tilt.up"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x03,0x01,0xff))
+      elseif func == "tilt.down"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x03,0x02,0xff))
+      elseif func == "pan.left"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x01,0x03,0xff))
+      elseif func == "pan.right"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x02,0x03,0xff))
   
-      elseif func == "PTZ_UpRt"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x02,0x01,0xff))
-      elseif func == "PTZ_DnRt"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x02,0x02,0xff))
-      elseif func == "PTZ_DnLt"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x01,0x02,0xff))
-      elseif func == "PTZ_UpLt"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x01,0x01,0xff))
+      elseif func == "pan.right.tilt.up"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x02,0x01,0xff))
+      elseif func == "pan.right.tilt.down"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x02,0x02,0xff))
+      elseif func == "pan.left.tilt.down"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x01,0x02,0xff))
+      elseif func == "pan.left.tilt.up"   then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,PS,TS,0x01,0x01,0xff))
   
-      elseif func == "PTZ_In"   then  VISCA("Cmd", string.char(0x81,0x01,0x04,0x07,(0x20 + ZoomSpeed),0xff))
-      elseif func == "PTZ_Out"  then  VISCA("Cmd", string.char(0x81,0x01,0x04,0x07,(0x30 + ZoomSpeed),0xff))
+      elseif func == "zoom.in"   then  VISCA("Cmd", string.char(0x81,0x01,0x04,0x07,(0x20 + ZoomSpeed),0xff))
+      elseif func == "zoom.out"  then  VISCA("Cmd", string.char(0x81,0x01,0x04,0x07,(0x30 + ZoomSpeed),0xff))
   
-      elseif func == "PT_Stop"  then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,0x00,0x00,0x03,0x03,0xff))
-      elseif func == "Z_Stop"   then  VISCA("Cmd", string.char(0x81,0x01,0x04,0x07,0x00,0xff))
+      elseif func == "pan.tilt.stop"  then  VISCA("Cmd", string.char(0x81,0x01,0x06,0x01,0x00,0x00,0x03,0x03,0xff))
+      elseif func == "zoom.stop"   then  VISCA("Cmd", string.char(0x81,0x01,0x04,0x07,0x00,0xff))
       end
   
     end
@@ -935,24 +935,27 @@ if Controls then
   
     for key, val in pairs(Controls) do
       -- PTZ ------------------------------------------------
-      if string.sub(key, 1, 9) == "PTZ_Speed" then
+      if string.sub(key, -6, -1) == ".speed" then
         val.EventHandler = function()
-          PanSpeed = Controls.PTZ_SpeedPan.Value
-          TiltSpeed = Controls.PTZ_SpeedTilt.Value
-          ZoomSpeed = Controls.PTZ_SpeedZoom.Value
+          PanSpeed = Controls["setup.pan.speed"].Value
+          TiltSpeed = Controls["setup.tilt.speed"].Value
+          ZoomSpeed = Controls["setup.zoom.speed"].Value
           print("PTZ Speeds "..PanSpeed .. ", " .. TiltSpeed .. ", " .. ZoomSpeed)
         end      
-      elseif string.sub(key, 1, 4) == "PTZ_" then
+      elseif string.sub(key, 1, 4) == "pan." or 
+             string.sub(key, 1, 5) == "tilt." or 
+             string.sub(key, 1, 5) == "zoom." or
+             key == "preset.home.load" then
         val.EventHandler = function(ctl)
           if ctl.Boolean == true then
             PTZ_Control(key)
   
-          elseif key == "PTZ_In" or 
-                 key == "PTZ_Out" then
-            PTZ_Control("Z_Stop")
+          elseif key == "zoom.in" or 
+                 key == "zoom.out" then
+            PTZ_Control("zoom.stop")
   
-          elseif key ~= "PTZ_Home" then
-            PTZ_Control("PT_Stop")
+          elseif key ~= "preset.home.load" then
+            PTZ_Control("pan.tilt.stop")
           end
         end
       end
@@ -961,8 +964,8 @@ if Controls then
     -- Presets ----------------------------------------------
     if NumPresets > 0 then
       for pst = 0, NumPresets - 1 do
-        local recallCtl = "Preset_Recall " .. string.format("%03d", pst)
-        local saveCtl = "Preset_Save " .. string.format("%03d", pst)
+        local recallCtl = "preset.recall." .. string.format("%03d", pst)
+        local saveCtl = "preset.save." .. string.format("%03d", pst)
   
         Controls[recallCtl].EventHandler = function()
           if Properties["Preset Hold Save"].Value == false then
@@ -1013,7 +1016,7 @@ if Controls then
     CommsTimeoutTimer = Timer.New()
     function CommsTimeout()
       CommsTimeoutTimer:Stop()
-      Controls["Online"].Boolean = false
+      Controls["system.online"].Boolean = false
     end
     CommsTimeoutTimer.EventHandler = CommsTimeout
   
